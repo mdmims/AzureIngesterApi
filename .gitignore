@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+.pytest_cache
+
+*.dat
+
+*.egg-info/
+.tox
+MANIFEST
+
+env/
+venv/
+.pyenv-version
+
+# Editors
+.idea/
+.vscode/
+
+## Automation tools
+.vagrant/
+*.retry
+deploy/deploy_files
+lib
+
+## Local Testing
+bin/logs/*.log
+.DS_Store
