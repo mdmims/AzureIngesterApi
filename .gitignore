@@ -25,3 +25,4 @@ lib
 ## Local Testing
 bin/logs/*.log
 .DS_Store
+*.http

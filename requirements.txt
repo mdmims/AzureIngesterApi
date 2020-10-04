@@ -1,5 +1,9 @@
 flask==1.1.2
 flask_sqlalchemy==2.4.4
+flask_script==2.0.6
+flask_migrate==2.5.3
+flask_marshmallow==0.14.0
+flask_restful==0.3.8
 flake8==3.8.4
 requests==2.24.0
 marshmallow==3.8.0
