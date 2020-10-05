@@ -4,7 +4,7 @@ from azure_ingester_api.app import create_app, db
 import os
 
 
-app = create_app(os.environ.get('DATA_HUB_MODEL_ENVIRONMENT'))
+app = create_app(os.environ.get('API_ENVIRONMENT'))
 
 migrate = Migrate(app, db)
 manager = Manager(app)
