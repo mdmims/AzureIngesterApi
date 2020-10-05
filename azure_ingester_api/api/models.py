@@ -1,5 +1,7 @@
 import logging
 import uuid
+import re
+import sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -39,3 +41,17 @@ class DataAsset(db.Model):
 
     id = db.Column(db.String(40), nullable=False, primary_key=True, default=generate_uuid)
     type_id = db.Column(db.Integer, db.ForeignKey(DataAssetType.id), nullable=False)
+
+
+def run_sql_script(sql_file, bind=None):
+    with open(sql_file, 'r') as f:
+        content = f.read()
+    statements = content.split(';')
+    for sql in statements:
+        if len(sql.strip()) > 0:
+            sql = re.sub(r'--.*\n', ' ', sql, flags=re.MULTILINE)
+            sql = sql.strip().replace('\n', ' ')
+            if bind:
+                bind.execute(sqlalchemy.sql.text(sql))
+            else:
+                db.engine.execute(sqlalchemy.sql.text(sql))

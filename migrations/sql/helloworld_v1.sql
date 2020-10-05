@@ -1,0 +1,1 @@
+insert into helloworld (id, saying) values (1, 'hello, world!')

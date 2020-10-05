@@ -7,6 +7,7 @@ Create Date: 2020-10-04 19:41:20.633859
 """
 from alembic import op
 import sqlalchemy as sa
+import azure_ingester_api.api.models as m
 
 
 # revision identifiers, used by Alembic.
@@ -24,6 +25,7 @@ def upgrade():
         sa.Column('saying', sa.String(), nullable=False),
         sa.PrimaryKeyConstraint('id')
     )
+    m.run_sql_script("migrations/sql/helloworld_v1.sql", op.get_bind())
     # ### end Alembic commands ###
 
 
