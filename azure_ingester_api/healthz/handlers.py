@@ -16,7 +16,7 @@ class PingResource(Resource):
 
 class HelloWorldResource(Resource):
     def get(self):
-        helloworld_phrases = HelloWorld.query.all()
+        helloworld_phrases = HelloWorld.retrieve_all()
         helloworld_phrases = helloworlds_schema.dump(helloworld_phrases)
         return {'status': 'OK', 'data': helloworld_phrases}, 200
 

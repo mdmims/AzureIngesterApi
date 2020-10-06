@@ -6,3 +6,7 @@ class HelloWorld(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     saying = db.Column(db.String, nullable=False)
+
+    @staticmethod
+    def retrieve_all():
+        return HelloWorld.query.all()
