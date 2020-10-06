@@ -5,7 +5,7 @@ from azure_ingester_api.app import create_app
 
 class BaseTestCase(TestCase):
     def create_app(self):
-        app = create_app(os.getenv('API_ENVIRONMENT'))
+        app = create_app(os.getenv('API_ENVIRONMENT', 'azure_ingester_api.config.TestConfig'))
         return app
 
     def assert_has_keys(self, expected_keys, container):
