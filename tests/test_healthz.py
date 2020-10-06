@@ -40,4 +40,4 @@ class TestHealthz(BaseTestCase):
         data = json.loads(response.data.decode())
         self.assertEqual(len(data['data']), 2)
         self.assertEqual('OK', data['status'])
-        self.assertEqual('Hello, World 1', data['data'][1]['saying'])
+        self.assertEqual('hello, world!', data['data'][1]['saying'])
