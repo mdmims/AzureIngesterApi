@@ -1,6 +1,8 @@
 import logging
 import uuid
 import re
+import csv
+from dataclasses import dataclass, field
 import sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 
@@ -17,7 +19,7 @@ def get_engine_type():
     return db.session.bind.dialect.name
 
 
-class DataAssetType(db.Model):
+class AssetType(db.Model):
     __tablename__ = 'asset_type'
 
     id = db.Column(db.Integer, nullable=False, primary_key=True)
@@ -29,18 +31,36 @@ class DataAssetType(db.Model):
 
     @staticmethod
     def retrieve_all_data_asset_types():
-        return DataAssetType.query.all()
+        return AssetType.query.all()
 
     @staticmethod
     def retrieve_data_asset_type_by_id(asset_type_id):
-        return DataAssetType.query.filter_by(id=asset_type_id).first()
+        return AssetType.query.filter_by(id=asset_type_id).first()
 
 
-class DataAsset(db.Model):
+class Asset(db.Model):
     __tablename__ = 'asset'
 
     id = db.Column(db.String(40), nullable=False, primary_key=True, default=generate_uuid)
-    type_id = db.Column(db.Integer, db.ForeignKey(DataAssetType.id), nullable=False)
+    type_id = db.Column(db.Integer, db.ForeignKey(AssetType.id), nullable=False)
+
+
+@dataclass(frozen=False)
+class StatusResponse:
+    status: str = "OK"
+    code: int = 200
+    messages: list = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class Result:
+    asset_type: str
+
+
+class DataAssetTypeResponse(StatusResponse):
+    def __init__(self, asset_type, **args):
+        super().__init__(**args)
+        self.result = Result(asset_type=asset_type)
 
 
 def run_sql_script(sql_file, bind=None):
@@ -55,3 +75,20 @@ def run_sql_script(sql_file, bind=None):
                 bind.execute(sqlalchemy.sql.text(sql))
             else:
                 db.engine.execute(sqlalchemy.sql.text(sql))
+
+
+def replace_empty(d):
+    for k, v in d.items():
+        if v == '':
+            d[k] = None
+    return d
+
+
+def insert_data_from_csv(filename, table, bind=None):
+    with open(filename, newline='', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        records = [dict(replace_empty(o)) for o in reader]
+        if bind:
+            bind.execute(table.insert().values(records))
+        else:
+            db.engine.execute(table.insert().values(records))
