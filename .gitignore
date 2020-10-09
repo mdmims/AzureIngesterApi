@@ -11,6 +11,7 @@ MANIFEST
 env/
 venv/
 .pyenv-version
+*.env
 
 # Editors
 .idea/

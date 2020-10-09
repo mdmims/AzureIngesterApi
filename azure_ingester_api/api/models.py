@@ -1,11 +1,10 @@
-import logging
-import uuid
-import re
 import csv
+import logging
+import re
+import uuid
 from dataclasses import dataclass, field
-import sqlalchemy
-from flask_sqlalchemy import SQLAlchemy
 
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 log = logging.getLogger('sqlalchemy')
@@ -30,12 +29,25 @@ class AssetType(db.Model):
         return f'{self.name}'
 
     @staticmethod
-    def retrieve_all_data_asset_types():
+    def retrieve_all_asset_types():
         return AssetType.query.all()
 
     @staticmethod
     def retrieve_data_asset_type_by_id(asset_type_id):
         return AssetType.query.filter_by(id=asset_type_id).first()
+
+    @staticmethod
+    def retrieve_data_asset_type_id_by_name(asset_type_name):
+        left_wildcard = right_wildcard = ""
+        match = re.match(r'(\*?)([\w -]+)(\*?)', str(asset_type_name))
+        if match:
+            left_wildcard = match.group(1)
+            asset_type_name = match.group(2)
+            right_wildcard = match.group(3)
+        asset_type = AssetType.query.filter_by(name=asset_type_name).first()
+        if asset_type:
+            return left_wildcard + str(asset_type.id) + right_wildcard
+        return None
 
 
 class Asset(db.Model):
@@ -72,9 +84,9 @@ def run_sql_script(sql_file, bind=None):
             sql = re.sub(r'--.*\n', ' ', sql, flags=re.MULTILINE)
             sql = sql.strip().replace('\n', ' ')
             if bind:
-                bind.execute(sqlalchemy.sql.text(sql))
+                bind.execute(SQLAlchemy.sql.text(sql))
             else:
-                db.engine.execute(sqlalchemy.sql.text(sql))
+                db.engine.execute(SQLAlchemy.sql.text(sql))
 
 
 def replace_empty(d):
