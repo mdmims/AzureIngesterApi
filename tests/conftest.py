@@ -8,7 +8,7 @@ from azure_ingester_api.app import create_app
 
 @pytest.fixture(scope="session")
 def app():
-    a = os.environ.get('API_ENVIRONMENT')
+    a = os.environ.get("API_ENVIRONMENT", "azure_ingester_api.config.TestConfig")
     app = create_app(environment_config=a)
     yield app
 

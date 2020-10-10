@@ -1,4 +1,11 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
+
+
+# validation regex for integers
+RE_INT_CHARS = "[-+]?[0-9]"
+RE_INT_PATTERN = f'^{RE_INT_CHARS}+$'
+RE_INT_PATTERN_ERROR = "Invalid input. Only integer values are allowed."
+RE_INT_VALIDATOR = validate.Regexp(RE_INT_PATTERN, flags=0, error=RE_INT_PATTERN_ERROR)
 
 
 class StatusSchema(Schema):

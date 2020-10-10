@@ -43,5 +43,5 @@ class AssetTypeHandler(Resource):
             abort(404)
 
 
-api_api.add_resource(AssetTypesHandler, '/AssetTypes')
-api_api.add_resource(AssetTypeHandler, '/AssetTypes/<typeId>')
+api_api.add_resource(AssetTypesHandler, '/assetTypes')
+api_api.add_resource(AssetTypeHandler, '/assetTypes/<typeId>')

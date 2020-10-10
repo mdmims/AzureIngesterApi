@@ -4,7 +4,7 @@ import pytest
 
 
 def test_should_retrieve_array_of_types(client, helpers):
-    response = client.get('/v1/AssetTypes')
+    response = client.get('/v1/assetTypes')
     assert response.status_code == 200
     data = json.loads(response.data.decode())
     assert len(data) > 1
@@ -20,7 +20,7 @@ def test_should_retrieve_array_of_types(client, helpers):
     ("not valid id", 404)  # non-int value
 ])
 def test_retrieving_asset_types(client, helpers, asset_type_value, expected_status_code):
-    response = client.get(f'/v1/AssetTypes/{asset_type_value}')
+    response = client.get(f'/v1/assetTypes/{asset_type_value}')
     assert response.status_code == expected_status_code
     if not 400 <= expected_status_code < 500:
         data = json.loads(response.data.decode())
