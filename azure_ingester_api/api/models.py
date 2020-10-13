@@ -58,6 +58,17 @@ class Asset(db.Model):
     name = db.Column(db.String(200), nullable=False)
 
 
+class DataTransform(db.Model):
+    __tablename__ = 'transform_type'
+
+    id = db.Column(db.Integer(), nullable=False, primary_key=True)
+    name = db.Column(db.String(40), nullable=False, unique=True)
+    description = db.Column(db.String(250))
+
+    def __repr__(self):
+        return f'{self.name}'
+
+
 @dataclass(frozen=False)
 class StatusResponse:
     status: str = "OK"
