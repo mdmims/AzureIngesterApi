@@ -16,4 +16,3 @@ def test_secured_helloworld(client, helpers):
     assert 1 == len(data["data"])
     assert "OK" == data["status"]
     assert "hello, world!" == data["data"][0]["saying"]
-
