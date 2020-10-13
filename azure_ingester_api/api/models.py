@@ -53,8 +53,9 @@ class AssetType(db.Model):
 class Asset(db.Model):
     __tablename__ = 'asset'
 
-    id = db.Column(db.String(40), nullable=False, primary_key=True, default=generate_uuid)
+    id = db.Column(db.String(40), nullable=False, primary_key=True, autoincrement=True)
     type_id = db.Column(db.Integer, db.ForeignKey(AssetType.id), nullable=False)
+    name = db.Column(db.String(200), nullable=False)
 
 
 @dataclass(frozen=False)
