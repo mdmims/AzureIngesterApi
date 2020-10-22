@@ -10,6 +10,16 @@ db = SQLAlchemy()
 log = logging.getLogger('sqlalchemy')
 
 
+class RegexMatchFailed(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class InvalidDataAssetIdError(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 def generate_uuid():
     return str(uuid.uuid4())
 
