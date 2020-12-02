@@ -4,6 +4,7 @@ import re
 import uuid
 from dataclasses import dataclass, field
 
+import sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -106,9 +107,9 @@ def run_sql_script(sql_file, bind=None):
             sql = re.sub(r'--.*\n', ' ', sql, flags=re.MULTILINE)
             sql = sql.strip().replace('\n', ' ')
             if bind:
-                bind.execute(SQLAlchemy.sql.text(sql))
+                bind.execute(sqlalchemy.sql.text(sql))
             else:
-                db.engine.execute(SQLAlchemy.sql.text(sql))
+                db.engine.execute(sqlalchemy.sql.text(sql))
 
 
 def replace_empty(d):

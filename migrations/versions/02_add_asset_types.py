@@ -4,10 +4,10 @@ Revision ID: 02_add_asset_types
 Revises: 01_healthz_table
 
 """
-from alembic import op
 import sqlalchemy as sa
-import azure_ingester_api.api.models as m
+from alembic import op
 
+import azure_ingester_api.api.models as m
 
 # revision identifiers, used by Alembic.
 revision = '02_add_asset_types'
@@ -26,7 +26,7 @@ def upgrade():
         sa.PrimaryKeyConstraint('id'),
         sa.UniqueConstraint('name')
     )
-    m.insert_data_from_csv('migrations/data/asset_type_v1.csv', m.DataAssetType.__table__, op.get_bind())
+    m.insert_data_from_csv('migrations/data/asset_type_v1.csv', m.AssetType.__table__, op.get_bind())
     # ### end Alembic commands ###
 
 
