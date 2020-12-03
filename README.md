@@ -13,7 +13,7 @@ Install the dependencies:
 
 # Running the application locally
 
-There are three convenience scripts that can help you get started quickly and run the app server:
+The following are scripts that can help you get started quickly and run the app server:
 
 - Run a development server for API: `./bin/run_dev.sh`
 
