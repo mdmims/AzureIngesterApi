@@ -17,6 +17,10 @@ The following are scripts that can help you get started quickly and run the app 
 
 - Run a development server for API: `./bin/run_dev.sh`
 
+# Running the application through Docker
+
+`docker-compose up`
+
 # Testing
 
 Testing is managed and driven through Pytest. Running instructions:
