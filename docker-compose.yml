@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  azureingesterapi:
+    image: azureingesterapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command:
+      - /bin/bash
+      - -c
+      - |
+        python manage.py db upgrade
+        python manage.py runserver -h 0.0.0.0
+    ports:
+      - 5000:5000
+    env_file:
+      - ./.env.dev
