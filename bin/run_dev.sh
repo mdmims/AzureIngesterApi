@@ -8,4 +8,4 @@ export FLASK_ENV=development
 python manage.py db upgrade
 
 # Start the server
-python manage.py runserver
+python manage.py runserver -h 0.0.0.0
