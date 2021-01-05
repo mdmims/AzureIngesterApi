@@ -1,5 +1,5 @@
-from flask import Blueprint, abort
-from flask_restful import Api, Resource
+from flask import Blueprint, abort, request
+from flask_restful import Api, Resource, reqparse
 
 from azure_ingester_api.app import db
 from . import models
@@ -13,12 +13,20 @@ def handle_success_response(schema, response, status=200):
     return schema.dump(response), status
 
 
+asset_types_parser = reqparse.RequestParser()
+asset_types_parser.add_argument("page", required=False, type=int, location="args", help="Page number to retrieve")
+asset_types_parser.add_argument("perPage", required=False, type=int, location="args", help="Items per page to retrieve")
+
+
 class AssetTypesHandler(Resource):
-    @staticmethod
-    def get():
-        asset_type = models.AssetType.retrieve_all_asset_types()
+    def get(self):
+        args = asset_types_parser.parse_args()
+        page = args["page"]
+        per_page = args["perPage"]
+
+        asset_type = models.AssetType.retrieve_all_asset_types(page, per_page)
         if asset_type:
-            response = models.DataAssetTypeResponse(asset_type)
+            response = models.DataAssetTypesPagedResponse(asset_types=asset_type, request=request)
             db.session.commit()
             return handle_success_response(schemas.AssetTypesResponseSchema(), response)
         else:

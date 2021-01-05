@@ -40,8 +40,8 @@ class AssetType(db.Model):
         return f'{self.name}'
 
     @staticmethod
-    def retrieve_all_asset_types():
-        return AssetType.query.all()
+    def retrieve_all_asset_types(page, per_page):
+        return AssetType.query.order_by("id").paginate(page, per_page, error_out=False)
 
     @staticmethod
     def retrieve_data_asset_type_by_id(asset_type_id):
@@ -90,6 +90,18 @@ class StatusResponse:
 @dataclass(frozen=True)
 class Result:
     asset_type: str
+    page: dict = None
+
+
+class DataAssetTypesPagedResponse(StatusResponse):
+    def __init__(self, asset_types, request, **kwargs):
+        super().__init__(**kwargs)
+
+        combined_object = {
+            "pagination_obj": asset_types,
+            "request": request
+        }
+        self.result = Result(asset_type=asset_types.items, page=combined_object)
 
 
 class DataAssetTypeResponse(StatusResponse):
