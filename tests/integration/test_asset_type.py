@@ -1,6 +1,22 @@
 import json
+from dataclasses import dataclass
+from typing import Union
 
 import pytest
+
+
+@dataclass(frozen=False)
+class PageSchema:
+    page: Union[int, None] = None
+    hasPrev: bool = None
+    prevPageNum: Union[int, None] = None
+    prevPage: Union[int, None] = None
+    hasNext: bool = None
+    perPage: Union[int, None] = None
+    totalItems: Union[int, None] = None
+    nextPageNum: Union[int, None] = None
+    totalPages: Union[int, None] = None
+    nextPage: Union[int, None] = None
 
 
 def test_should_retrieve_array_of_types(client, helpers):
@@ -27,3 +43,21 @@ def test_retrieving_asset_types(client, helpers, asset_type_value, expected_stat
         helpers.assert_has_keys(('status', 'messages', 'code', 'result'), data)
         helpers.assert_has_keys('assetType', data['result'])
         helpers.assert_has_keys(('id', 'name', 'description'), data['result']['assetType'])
+
+
+def test_should_retrieve_pagination_data_for_all_asset_types(client, helpers):
+    response = client.get("/v1/assetTypes")
+    assert response.status_code == 200
+    data = json.loads(response.data.decode())
+    assert "page" in data["result"]
+
+    # instantiate class to hold expected values for page data
+    expected = PageSchema(page=1, hasPrev=False, prevPageNum=None, prevPage=None, hasNext=False, perPage=20, totalItems=2,
+                          nextPageNum=None, totalPages=1, nextPage=None)
+
+    # retrieve the json response and map the values to the defined schema
+    actual = PageSchema()
+    for k, v in data["result"]["page"].items():
+        setattr(actual, k, v)
+
+    assert expected == actual
