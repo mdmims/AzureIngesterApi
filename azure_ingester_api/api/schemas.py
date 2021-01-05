@@ -1,7 +1,7 @@
-from marshmallow import Schema, fields, validate
-from urllib.parse import unquote
 import re
+from urllib.parse import unquote
 
+from marshmallow import Schema, fields, validate
 
 # validation regex for integers
 RE_INT_CHARS = "[-+]?[0-9]"
@@ -35,7 +35,7 @@ class PageSchema(Schema):
         return self.get_pages(obj, "previous")
 
     def get_pages(self, obj, target_field):
-        if all(key in obj for key in("pagination_obj", "request")):
+        if all(key in obj for key in ("pagination_obj", "request")):
             p = obj["pagination_obj"]
             r = obj["request"]
 
